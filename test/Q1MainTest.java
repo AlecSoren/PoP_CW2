@@ -119,7 +119,27 @@ public class Q1MainTest extends TestCase {
 //        A case insensitivity test suggested by ChatGPT
         String inputString = "The Fox jumps over the DOG!";
         String[] redactedWords = new String[]{"fox", "jumps", "dog"};
-        String result = "The *** over the ***!";
+        String result = "The *** ***** over the ***!";
+        assertEquals(result, Q1Main.redact(inputString, redactedWords));
+    }
+
+    public void testBigInput() {
+//        Very large inputString and redactedWords
+        String substring = "Crazy? I was crazy once. They put me in a room. A rubber room. With rats. And rats make me crazy. ";
+        String redactedSubstring = "*****? I was ***** once. They put me in a ****. A rubber ****. With ****. And **** make me *****. ";
+        String[] redactedWords = new String[10000];
+        for (int i = 0; i < redactedWords.length; i++) {
+            if (i%3 == 0) {
+                redactedWords[i] = "crazy";
+            } else if (i%3 == 1) {
+                redactedWords[i] = "room";
+            } else {
+                redactedWords[i] = "rats";
+            }
+        }
+
+        String inputString = substring.repeat(10000);
+        String result = redactedSubstring.repeat(10000);
         assertEquals(result, Q1Main.redact(inputString, redactedWords));
     }
 }
