@@ -1,4 +1,4 @@
-public class Q1_Main {
+public class Q1Main {
     public static String redact(String content, String[] redactWords) {
 
 //        Contains all characters allowed in words - change as needed
