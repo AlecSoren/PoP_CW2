@@ -60,26 +60,26 @@ public class Q2Test extends TestCase {
         String nullString = null;
         myList.add(nullString);
         myList.add(nullString);
-        assertNull(myList.getLast().getString());
+        assertNull(myList.getFirst().getString());
         assertEquals(myList.size(), 8);
+        myList.remove(null);
         myList.add("");
         myList.add("");
         assertEquals(myList.getFirst().getString(), "");
-        assertEquals(myList.size(), 9);
+        assertEquals(myList.size(), 8);
         myList.add(" ");
         myList.add("  ");
         assertEquals(myList.get(2).getString(), "  ");
-        assertEquals(myList.size(), 11);
+        assertEquals(myList.size(), 10);
         myList.add("@.lasd\tjfdh\n78123;];#");
         myList.add("@.lASd\tjfdh\n78123;];#");
         assertEquals(myList.get(3).getString(), "@.lasd\tjfdh\n78123;];#");
-        assertEquals(myList.size(), 12);
+        assertEquals(myList.size(), 11);
         myList.orderDescending();
         myList.add("lovely dear sir");
-        assertEquals(myList.get(7).getString(), "lovely dear sir");
-        myList.remove(null);
+        assertEquals("lovely dear sir", myList.get(6).getString());
         myList.add(nullString);
-        assertNull(myList.getFirst().getString());
+        assertNull(myList.getLast().getString());
     }
 
     public void testAddStringBig() {
@@ -113,7 +113,7 @@ public class Q2Test extends TestCase {
         Node redNode = new Node(blueNode, "z", greenNode);
         myList.add(redNode);
         assertEquals(myList.getLast().getPrev(), myNode);
-        assertNull(myList.getLast().getNext().getString());
+        assertEquals("until we meet again", myList.getLast().getNext().getString());
     }
 
     public void testGetFirst() {

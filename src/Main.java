@@ -7,8 +7,11 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        VigenereCipher myCipher = new VigenereCipher();
-        String result = myCipher.decrypt("decrypt_check.txt", "key_check.txt");
-        System.out.println(result);
+        SortedLinkedList myList = new SortedLinkedList();
+        myList.add("SUCH A LUST FOR REVENGE");
+        myList.add("WHO???");
+        myList.print();
+        System.out.println(myList.getFirst().getString());
+        System.out.println(myList.getLast().getString());
     }
 }

@@ -1,18 +1,23 @@
 public class SortedLinkedList implements SortedList {
-    final Node sentinelNode;
+    private Node firstNode;
     private boolean orderIsAscending;
-    private int size;
 
     public SortedLinkedList () {
-        sentinelNode = new Node(null);
-        sentinelNode.setPrev(sentinelNode);
-        sentinelNode.setNext(sentinelNode);
+        firstNode = null;
         orderIsAscending = true;
-        size = 0;
     }
 
     @Override
     public int size() {
+        if (firstNode == null) {
+            return 0;
+        }
+        int size = 1;
+        Node currentNode = firstNode.getNext();
+        while (currentNode != firstNode) {
+            size++;
+            currentNode = currentNode.getNext();
+        }
         return size;
     }
 
@@ -24,173 +29,107 @@ public class SortedLinkedList implements SortedList {
 
     @Override
     public void add(Node node) {
-        String newNodeString = node.getString();
-        Node nodeAfter = sentinelNode.getNext();
-        while (nodeAfter != sentinelNode) {
-            String stringAfter = nodeAfter.getString();
-            if (stringAfter == null) {
-                if (newNodeString == null) {
-                    return;
-                } else {
-                    break;
-                }
-            } else if (newNodeString == null) {
-                nodeAfter = nodeAfter.getNext();
-            } else {
-                int stringComparisonResult = stringAfter.compareToIgnoreCase(newNodeString);
-                if (stringComparisonResult == 0) {
-                    return;
-                } else if (stringComparisonResult < 0) {
-                    nodeAfter = nodeAfter.getNext();
-                } else {
-                    break;
-                }
-            }
+
+        if (firstNode == null) {
+            firstNode = node;
+            node.setNext(node);
+            node.setPrev(node);
+            return;
         }
+
+        String newNodeString = node.getString();
+        Node nodeAfter = firstNode;
+        do {
+            int comparisonResult = compareStrings(newNodeString, nodeAfter.getString(), false);
+            if (comparisonResult == 0) {return;}
+            if (!orderIsAscending) {
+                comparisonResult = -comparisonResult;
+            }
+            if (comparisonResult < 0) {
+                if (nodeAfter == firstNode) {
+                    firstNode = node;
+                }
+                break;
+            }
+            nodeAfter = nodeAfter.getNext();
+        }
+        while (nodeAfter != firstNode);
+
         Node nodeBefore = nodeAfter.getPrev();
         node.setNext(nodeAfter);
         node.setPrev(nodeBefore);
         nodeBefore.setNext(node);
         nodeAfter.setPrev(node);
-        size++;
     }
 
     @Override
     public Node getFirst() {
-        if (size == 0) {
-            return null;
-        }
-        if (orderIsAscending) {
-            return sentinelNode.getNext();
-        } else {
-            return sentinelNode.getPrev();
-        }
+        return firstNode;
     }
 
     @Override
     public Node getLast() {
-        if (size == 0) {
-            return null;
-        }
-        if (orderIsAscending) {
-            return sentinelNode.getPrev();
-        } else {
-            return sentinelNode.getNext();
-        }
+        return (firstNode == null) ? null : firstNode.getPrev();
     }
 
     @Override
     public Node get(int index) {
-        if (index < 0 || index >= size) {
+        if (firstNode == null) {
             return null;
         }
-        Node node = sentinelNode;
-        for (int i = 0; i < index + 1; i++) {
-            if (orderIsAscending) {
-                node = node.getNext();
-            } else {
-                node = node.getPrev();
+        Node currentNode = firstNode;
+        for (int i = 0; i != index; i += (int) Math.signum(index)) {
+            currentNode = currentNode.getNext();
+            if (currentNode == firstNode) {
+                return null;
             }
         }
-        return node;
+        return currentNode;
     }
 
     @Override
     public boolean isPresent(String string) {
-        Node currentNode = sentinelNode.getNext();
-        while (currentNode != sentinelNode) {
-            String currentString = currentNode.getString();
-            if (string == null) {
-                if (currentString == null) {
-                    return true;
-                }
-            } else if (currentString != null && currentString.equals(string)) {
-                return true;
-            }
-            currentNode = currentNode.getNext();
-        }
-        return false;
+        return getNodeByString(string) != null;
     }
 
     @Override
     public boolean removeFirst() {
-        return remove(0);
+        return removeNode(firstNode);
     }
 
     @Override
     public boolean removeLast() {
-        return remove(size - 1);
+        return (firstNode == null) ? false : removeNode(firstNode.getPrev());
     }
 
     @Override
     public boolean remove(int index) {
-        if (index < 0 || index >= size) {
-            return false;
-        }
-        Node node = sentinelNode;
-        for (int i = 0; i < index + 1; i++) {
-            if (orderIsAscending) {
-                node = node.getNext();
-            } else {
-                node = node.getPrev();
-            }
-        }
-        Node nodeBefore = node.getPrev();
-        Node nodeAfter = node.getNext();
-        nodeBefore.setNext(nodeAfter);
-        nodeAfter.setPrev(nodeBefore);
-        size--;
-        return true;
+        return removeNode(get(index));
     }
 
     @Override
     public boolean remove(String string) {
-        Node currentNode = sentinelNode.getNext();
-        while (currentNode != sentinelNode) {
-            String currentString = currentNode.getString();
-            if (string == null) {
-                if (currentString == null) {
-                    break;
-                }
-            } else if (currentString != null && currentString.equals(string)) {
-                break;
-            }
-            currentNode = currentNode.getNext();
-        }
-        if (currentNode == sentinelNode) {
-            return false;
-        }
-        Node nodeBefore = currentNode.getPrev();
-        Node nodeAfter = currentNode.getNext();
-        nodeBefore.setNext(nodeAfter);
-        nodeAfter.setPrev(nodeBefore);
-        size--;
-        return true;
+        return removeNode(getNodeByString(string));
     }
 
     @Override
     public void orderAscending() {
-        orderIsAscending = true;
+        changeOrder(true);
     }
 
     @Override
     public void orderDescending() {
-        orderIsAscending = false;
+        changeOrder(false);
     }
 
     @Override
     public void print() {
+        if (firstNode == null) {
+            return;
+        }
         StringBuilder outputString = null;
-        Node node = sentinelNode;
-        while (true) {
-            if (orderIsAscending) {
-                node = node.getNext();
-            } else {
-                node = node.getPrev();
-            }
-            if (node == sentinelNode) {
-                break;
-            }
+        Node node = firstNode;
+        do {
             if (node.getString() != null) {
                 if (outputString == null) {
                     outputString = new StringBuilder(node.getString());
@@ -198,9 +137,91 @@ public class SortedLinkedList implements SortedList {
                     outputString.append("\n").append(node.getString());
                 }
             }
-        }
+            node = node.getNext();
+        } while (node != firstNode);
         if (outputString != null) {
             System.out.println(outputString);
         }
+    }
+
+    /**
+     * Determines which string comes first alphabetically.
+     *
+     * @param string1 the first string
+     * @param string2 the second string
+     * @param caseSensitive if false, the comparison will ignore case
+     * @return A negative number if string1 comes before string2, a positive number if it comes after, or 0 if they are
+     * the same
+     */
+    private int compareStrings(String string1, String string2, boolean caseSensitive) {
+        if (string1 == null) {
+            return (string2 == null) ? 0 : -1;
+        }
+        if (string2 == null) {
+            return 1;
+        }
+        return caseSensitive ? string1.compareTo(string2) : string1.compareToIgnoreCase(string2);
+    }
+
+    /**
+     * Gets the node with the specified string.
+     *
+     * @param string the string to be found
+     * @return The node with the specified string, or null if it isn't in the list
+     */
+    private Node getNodeByString(String string) {
+        if (firstNode == null) {
+            return null;
+        }
+        Node currentNode = firstNode;
+        do {
+            if (compareStrings(currentNode.getString(), string, true) == 0) {
+                return currentNode;
+            }
+            currentNode = currentNode.getNext();
+        }
+        while (currentNode != firstNode);
+        return null;
+    }
+
+    /**
+     * Removes a specified node from the list.
+     *
+     * @param node the node to be removed
+     * @return true if the node was successfully removed, false if it did not exist
+     */
+    private boolean removeNode(Node node) {
+        if (node == null) {
+            return false;
+        }
+        if (node == firstNode) {
+            firstNode = (node.getNext() == node) ? null : node.getNext();
+        }
+        node.getNext().setPrev(node.getPrev());
+        node.getPrev().setNext(node.getNext());
+        node.setNext(null);
+        node.setPrev(null);
+        return true;
+    }
+
+    /**
+     * Sets the list order to ascending or descending, and reverses the list if necessary.
+     *
+     * @param newOrderIsAscending true if you are setting the order to ascending, false if you are setting the order to
+     *                            descending
+     */
+    private void changeOrder(boolean newOrderIsAscending) {
+        if (orderIsAscending != newOrderIsAscending && firstNode != null) {
+            firstNode = firstNode.getPrev();
+            Node currentNode = firstNode;
+            do {
+                Node previousNode = currentNode;
+                currentNode = currentNode.getNext();
+                previousNode.setNext(previousNode.getPrev());
+                previousNode.setPrev(currentNode);
+            }
+            while (currentNode != firstNode);
+        }
+        orderIsAscending = newOrderIsAscending;
     }
 }
