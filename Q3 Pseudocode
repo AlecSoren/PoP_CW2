@@ -1,0 +1,24 @@
+function calculate_gaps(values):
+    temp = [], gaps = []
+    n = length_of(values)
+    gap = 1, i = 2
+    while gap is less than n:
+        add gap to temp
+        gap = (2 to the power of i) - 1
+        i+=1
+    for i from (length_of(temp) - 1) to 0 in decrements of 1:
+        add temp[i] to gaps
+    return gaps
+
+function sort(values, gaps):
+      n = length_of(values)
+      gaps = calculate_gaps(values)
+      for each gap in gaps:
+          for i from gap to (n - 1) in increments of 1:
+              temp = values[i]
+              j = 0
+              for j from i to gap in decrements of gap:
+                  if values[j-gap] is less than or equal to temp:
+                      break
+                  values[j] = values[j - gap]
+              values[j] = temp
