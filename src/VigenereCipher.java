@@ -1,6 +1,6 @@
 import java.io.File;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.NoSuchElementException;
 
 public class VigenereCipher implements Cipher {
 

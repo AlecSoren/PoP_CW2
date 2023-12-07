@@ -159,4 +159,11 @@ public class Q1MainTest extends TestCase {
         String result = "I really can't stay\nBut baby it's **** outside\nThe **** are on their way\nBut baby it's **** outside";
         assertEquals(result, Q1Main.redact(input, redactedWords));
     }
+
+    public void testRedactSpecial() {
+        String input = "?Donde esta, la bibilioteca?";
+        String[] redactedWords = new String[]{"?", "?Donde", " ", "", "esta,", "bibiloteca?", "la"};
+        String expected = "?Donde esta, ** bibilioteca?";
+        assertEquals(expected, Q1Main.redact(input, redactedWords));
+    }
 }

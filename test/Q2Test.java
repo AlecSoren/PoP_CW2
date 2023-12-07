@@ -174,9 +174,6 @@ public class Q2Test extends TestCase {
         assertTrue(myList.isPresent("master yoda"));
         assertFalse(myList.isPresent("you survived"));
 
-        assertFalse(myList.isPresent("MASTER YODA"));
-        assertFalse(myList.isPresent("Master yoda"));
-        assertFalse(myList.isPresent("master yodA"));
         assertFalse(myList.isPresent(" master yoda"));
         assertFalse(myList.isPresent("\nmaster yoda"));
 
@@ -312,9 +309,6 @@ public class Q2Test extends TestCase {
 
         myList.add("bacon");
         assertFalse(myList.remove("seagulls"));
-        assertFalse(myList.remove("BACON"));
-        assertFalse(myList.remove("Bacon"));
-        assertFalse(myList.remove("bacoN"));
         assertFalse(myList.remove(" bacon"));
         assertFalse(myList.remove("\nbacon"));
         assertTrue(myList.remove("bacon"));
@@ -484,5 +478,73 @@ public class Q2Test extends TestCase {
         assertEquals(expectedResult, outContent.toString());
 
         System.setOut(originalOut);
+    }
+
+    public void testisPresentCaseInsensitive() {
+        SortedLinkedList myList = new SortedLinkedList();
+        myList.add("rat");
+        myList.add("Mouse");
+        myList.add("VOLE");
+        myList.add("squirreL");
+
+        assertTrue(myList.isPresent("rat"));
+        assertTrue(myList.isPresent("Rat"));
+        assertTrue(myList.isPresent("raT"));
+        assertTrue(myList.isPresent("RAT"));
+
+        assertTrue(myList.isPresent("mouse"));
+        assertTrue(myList.isPresent("Mouse"));
+        assertTrue(myList.isPresent("mousE"));
+        assertTrue(myList.isPresent("MOUSE"));
+
+        assertTrue(myList.isPresent("vole"));
+        assertTrue(myList.isPresent("Vole"));
+        assertTrue(myList.isPresent("volE"));
+        assertTrue(myList.isPresent("VOLE"));
+
+        assertTrue(myList.isPresent("squirrel"));
+        assertTrue(myList.isPresent("Squirrel"));
+        assertTrue(myList.isPresent("squirreL"));
+        assertTrue(myList.isPresent("SQUIRREL"));
+    }
+
+    public void testRemoveCaseInsensitive() {
+        SortedLinkedList myList = new SortedLinkedList();
+
+        myList.add("blue");
+        assertTrue(myList.remove("blue"));
+        myList.add("blue");
+        assertTrue(myList.remove("Blue"));
+        myList.add("blue");
+        assertTrue(myList.remove("bluE"));
+        myList.add("blue");
+        assertTrue(myList.remove("BLUE"));
+
+        myList.add("Red");
+        assertTrue(myList.remove("red"));
+        myList.add("Red");
+        assertTrue(myList.remove("Red"));
+        myList.add("Red");
+        assertTrue(myList.remove("reD"));
+        myList.add("Red");
+        assertTrue(myList.remove("RED"));
+
+        myList.add("pinK");
+        assertTrue(myList.remove("pink"));
+        myList.add("pinK");
+        assertTrue(myList.remove("Pink"));
+        myList.add("pinK");
+        assertTrue(myList.remove("pinK"));
+        myList.add("pinK");
+        assertTrue(myList.remove("PINK"));
+
+        myList.add("NAVY");
+        assertTrue(myList.remove("navy"));
+        myList.add("NAVY");
+        assertTrue(myList.remove("Navy"));
+        myList.add("NAVY");
+        assertTrue(myList.remove("navY"));
+        myList.add("NAVY");
+        assertTrue(myList.remove("NAVY"));
     }
 }

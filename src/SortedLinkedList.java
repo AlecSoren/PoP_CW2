@@ -138,9 +138,7 @@ public class SortedLinkedList implements SortedList {
             }
             node = node.getNext();
         } while (node != firstNode);
-        if (outputString != null) {
-            System.out.println(outputString);
-        }
+        System.out.println(outputString);
     }
 
     /**
@@ -174,7 +172,7 @@ public class SortedLinkedList implements SortedList {
         }
         Node currentNode = firstNode;
         do {
-            if (compareStrings(currentNode.getString(), string, true) == 0) {
+            if (compareStrings(currentNode.getString(), string, false) == 0) {
                 return currentNode;
             }
             currentNode = currentNode.getNext();
