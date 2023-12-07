@@ -99,7 +99,7 @@ public class SortedLinkedList implements SortedList {
 
     @Override
     public boolean removeLast() {
-        return (firstNode == null) ? false : removeNode(firstNode.getPrev());
+        return firstNode != null && removeNode(firstNode.getPrev());
     }
 
     @Override

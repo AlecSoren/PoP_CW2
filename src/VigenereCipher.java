@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class VigenereCipher implements Cipher {
@@ -16,8 +17,14 @@ public class VigenereCipher implements Cipher {
     private String encryptOrDecrypt(String messageFilename, String keyFilename, boolean isEncrypting) {
 
         String message = readFileAsString(messageFilename);
+        if (message == null) {
+            return null;
+        }
 
         String rawKey = readFileAsString(keyFilename);
+        if (rawKey == null) {
+            return null;
+        }
         StringBuilder keyBuilder = new StringBuilder();
         for (char keyCharacter:
              rawKey.toCharArray()) {
@@ -30,7 +37,7 @@ public class VigenereCipher implements Cipher {
         }
         String key = keyBuilder.toString();
         if (key.isEmpty()) {
-            return message;
+            return null;
         }
 
         StringBuilder outputStringBuilder = new StringBuilder();
@@ -48,8 +55,10 @@ public class VigenereCipher implements Cipher {
         try (Scanner fileScanner = new Scanner(new File(filename))) {
             fileScanner.useDelimiter("\\Z");
             outputString = fileScanner.next();
-        } catch (Exception e) {
+        } catch (NoSuchElementException e) {
             outputString = "";
+        } catch (Exception e) {
+            outputString = null;
         }
         return outputString;
     }

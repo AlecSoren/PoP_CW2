@@ -4,6 +4,7 @@ public class CustomSort implements SortingInterface {
 
     private ArrayList<Double> values;
 
+    //Pseudocode implementation
     private ArrayList<Integer> calculateGaps() {
         ArrayList<Integer> temp = new ArrayList<>();
         ArrayList<Integer> gaps = new ArrayList<>();
@@ -21,6 +22,7 @@ public class CustomSort implements SortingInterface {
         return gaps;
     }
 
+    //Pseudocode implementation
     private void shellSort() {
         int n = values.size();
         ArrayList<Integer> gaps = calculateGaps();
