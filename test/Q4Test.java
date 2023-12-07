@@ -1,7 +1,5 @@
 import junit.framework.TestCase;
 
-import java.util.Locale;
-
 public class Q4Test extends TestCase {
 
     VigenereCipher myCipher = new VigenereCipher();

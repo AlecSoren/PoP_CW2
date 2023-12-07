@@ -1,6 +1,10 @@
 public class Q1Main {
     public static String redact(String content, String[] redactWords) {
 
+        if (content == null || redactWords == null) {
+            return null;
+        }
+
 //        Contains all characters allowed in words - change as needed
         String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -15,7 +19,9 @@ public class Q1Main {
 //                We're not in a word. Check if the word we just finished needs to be redacted
                 boolean wordShouldBeRedacted = false;
                 for (String redactedWord : redactWords) {
-                    wordShouldBeRedacted |= redactedWord.equalsIgnoreCase(word);
+                    if (redactedWord != null) {
+                        wordShouldBeRedacted |= redactedWord.equalsIgnoreCase(word);
+                    }
                 }
                 if (wordShouldBeRedacted) {
 //                    The word does need to be redacted, so add an equal length of stars to the output string

@@ -142,4 +142,21 @@ public class Q1MainTest extends TestCase {
         String result = redactedSubstring.repeat(10000);
         assertEquals(result, Q1Main.redact(inputString, redactedWords));
     }
+
+    public void testInputStringNull() {
+        String[] redactedWords = new String[]{"fox", "jumps", "dog"};
+        assertNull(Q1Main.redact(null, redactedWords));
+    }
+
+    public void testRedactWordsNull() {
+        String input = "hello!";
+        assertNull(Q1Main.redact(input, null));
+    }
+
+    public void testWordNull() {
+        String input = "I really can't stay\nBut baby it's cold outside\nThe cops are on their way\nBut baby it's cold outside";
+        String[] redactedWords = new String[]{null, "cold", null, "cops", null};
+        String result = "I really can't stay\nBut baby it's **** outside\nThe **** are on their way\nBut baby it's **** outside";
+        assertEquals(result, Q1Main.redact(input, redactedWords));
+    }
 }
