@@ -410,7 +410,7 @@ public class Q2Test extends TestCase {
         myList.add("");
         myList.add(new Node(null));
         myList.print();
-        String expectedResult = "\n" +
+        String expectedResult = "\n\n" +
                 "\tThis string starts with a tab character\n" +
                 "\nThis string starts with a newline character\n" +
                 " This string starts with a space\n" +
@@ -480,7 +480,7 @@ public class Q2Test extends TestCase {
                 " This string starts with a space\n" +
                 "\n" +
                 "This string starts with a newline character\n" +
-                "\tThis string starts with a tab character\n\r\n";
+                "\tThis string starts with a tab character\n\n\r\n";
         assertEquals(expectedResult, outContent.toString());
 
         System.setOut(originalOut);

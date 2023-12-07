@@ -130,12 +130,11 @@ public class SortedLinkedList implements SortedList {
         StringBuilder outputString = null;
         Node node = firstNode;
         do {
-            if (node.getString() != null) {
-                if (outputString == null) {
-                    outputString = new StringBuilder(node.getString());
-                } else {
-                    outputString.append("\n").append(node.getString());
-                }
+            String newString = node.getString() == null ? "" : node.getString();
+            if (outputString == null) {
+                outputString = new StringBuilder(newString);
+            } else {
+                outputString.append("\n").append(newString);
             }
             node = node.getNext();
         } while (node != firstNode);
