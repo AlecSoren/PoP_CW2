@@ -13,6 +13,16 @@ public class Q3Test extends TestCase {
         assertEquals(expectedValues, values);
     }
 
+    public void testSetValuesTwice() {
+        CustomSort mySort = new CustomSort();
+        ArrayList<Double> values = new ArrayList<>(List.of(101.0, 102.0, 99.0));
+        ArrayList<Double> newValues = new ArrayList<>(List.of(3.2, 1.5, 0.0, 2.7, 1.0, -52.5, -12.3, -0.0, -1.0));
+        ArrayList<Double> expectedValues = new ArrayList<>(List.of(-52.5, -12.3, -1.0, -0.0, 0.0, 1.0, 1.5, 2.7, 3.2));
+        mySort.setValues(values);
+        mySort.setValues(newValues);
+        assertEquals(expectedValues, newValues);
+    }
+
     public void testSetOneElement() {
         CustomSort mySort = new CustomSort();
         ArrayList<Double> values = new ArrayList<>(List.of(-1.0));
@@ -231,7 +241,9 @@ public class Q3Test extends TestCase {
         mySort.setValues(values);
         mySort.remove(-1);
         mySort.remove(-4);
-        ArrayList<Double> expectedValues = new ArrayList<>(List.of(0.0, 1.0, 5.4));
+//        This is only if we allow negative indices, which we probably shouldn't
+//        ArrayList<Double> expectedValues = new ArrayList<>(List.of(0.0, 1.0, 5.4));
+        ArrayList<Double> expectedValues = new ArrayList<>(List.of(-0.9, 0.0, 1.0, 5.4, 52.6));
         assertEquals(expectedValues, values);
     }
 
@@ -275,10 +287,7 @@ public class Q3Test extends TestCase {
         mySort.sort();
     }
 
-    /**
-     * Test that CustomSort behaves correctly when the original values object is modified directly
-     */
-    public void testOriginalValuesModified() {
+    public void testOriginalValuesAdd() {
         CustomSort mySort = new CustomSort();
         ArrayList<Double> values = new ArrayList<>(List.of(2.7, 1.0, -52.5, -12.3, -0.0, -1.0));
         mySort.setValues(values);
@@ -297,5 +306,44 @@ public class Q3Test extends TestCase {
         values.add(2.9);
         expectedGaps = new ArrayList<>(List.of(7, 3, 1));
         assertEquals(expectedGaps, mySort.getGaps());
+
+        values.add(1.11);
+        values.add(null);
+        mySort.add(-2.11);
+        expectedValues = new ArrayList<>(List.of(-52.5, -12.3, -6.0, -2.11, -1.0, -0.0, 1.0, 1.11, 2.7, 2.9));
+        assertEquals(expectedValues, values);
+
+        values.add(2.3);
+        values.add(null);
+        mySort.remove(10);
+        expectedValues = new ArrayList<>(List.of(-52.5, -12.3, -6.0, -2.11, -1.0, -0.0, 1.0, 1.11, 2.3, 2.7));
+        assertEquals(expectedValues, values);
+    }
+
+    public void testOriginalValuesRemove() {
+        CustomSort mySort = new CustomSort();
+        ArrayList<Double> values = new ArrayList<>(List.of(2.7, 1.0, -52.5, -12.3, -0.0, -1.0));
+        values.remove(3);
+        mySort.setValues(values);
+
+        values.remove(1);
+        ArrayList<Double> expectedValues = new ArrayList<>(List.of(-52.5, -0.0, 1.0, 2.7));
+        assertEquals(expectedValues, values);
+
+        ArrayList<Integer> expectedGaps = new ArrayList<>(List.of(3, 1));
+        assertEquals(expectedGaps, mySort.getGaps());
+        values.remove(0);
+        expectedGaps = new ArrayList<>(List.of(1));
+        assertEquals(expectedGaps, mySort.getGaps());
+
+        values.remove(1);
+        mySort.add(-2.11);
+        expectedValues = new ArrayList<>(List.of(-2.11, -0.0, 2.7));
+        assertEquals(expectedValues, values);
+
+        values.remove(0);
+        mySort.remove(1);
+        expectedValues = new ArrayList<>(List.of(-0.0));
+        assertEquals(expectedValues, values);
     }
 }

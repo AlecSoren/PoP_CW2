@@ -74,7 +74,7 @@ public class SortedLinkedList implements SortedList {
 
     @Override
     public Node get(int index) {
-        if (firstNode == null) {
+        if (firstNode == null || index < 0) {
             return null;
         }
         Node currentNode = firstNode;

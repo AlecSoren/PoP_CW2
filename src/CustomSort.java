@@ -1,46 +1,8 @@
 import java.util.ArrayList;
 
 public class CustomSort implements SortingInterface {
+
     private ArrayList<Double> values;
-
-    @Override
-    public void setValues(ArrayList<Double> values) {
-        this.values = values;
-        sort();
-    }
-
-    @Override
-    public ArrayList<Integer> getGaps() {
-        return calculateGapsSafe();
-    }
-
-    @Override
-    public void add(Double value) {
-        if (values != null) {
-            values.add(value);
-            sort();
-        }
-    }
-
-    @Override
-    public void remove(int index) {
-        if (values == null) { return; }
-        sort();
-        if (index < 0) {
-            index = values.size() + index;
-        }
-        try {
-            values.remove(index);
-        } catch (IndexOutOfBoundsException ignored) {}
-    }
-
-    @Override
-    public void sort() {
-        if (values != null) {
-            removeNull();
-            shellSort();
-        }
-    }
 
     private ArrayList<Integer> calculateGaps() {
         ArrayList<Integer> temp = new ArrayList<>();
@@ -75,6 +37,45 @@ public class CustomSort implements SortingInterface {
                 }
                 values.set(j, temp);
             }
+        }
+    }
+
+    @Override
+    public void setValues(ArrayList<Double> values) {
+        this.values = values;
+        sort();
+    }
+
+    @Override
+    public ArrayList<Integer> getGaps() {
+        return calculateGapsSafe();
+    }
+
+    @Override
+    public void add(Double value) {
+        if (values != null) {
+            values.add(value);
+            sort();
+        }
+    }
+
+    @Override
+    public void remove(int index) {
+        if (values == null) { return; }
+        sort();
+        /*if (index < 0) {
+            index = values.size() + index;
+        }*/
+        try {
+            values.remove(index);
+        } catch (IndexOutOfBoundsException ignored) {}
+    }
+
+    @Override
+    public void sort() {
+        if (values != null) {
+            removeNull();
+            shellSort();
         }
     }
 
