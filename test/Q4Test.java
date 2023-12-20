@@ -117,8 +117,8 @@ public class Q4Test extends TestCase {
         String messagePath = "Q4 Files/encrypt_check.txt";
         String keyPath = "Q4 Files/key_special_characters.txt";
         String result = myCipher.encrypt(messagePath, keyPath);
-        String expected = "SFB'K RAZTKI HU TQEB EDLF TOPQ!\n" +
-                "UIYSXNIEQ LUJ KOCL NM BTIM UIEMXCUXEHKU.";
+        String expected = "SFB'K RAZTKT TO TEST YDLF TOPQ!\n" +
+                "UTHERWISE YOJ KOCL NM BERY DISAPPOXEHKU.";
         assertEquals(expected, result);
     }
 
@@ -126,7 +126,8 @@ public class Q4Test extends TestCase {
         String messagePath = "Q4 Files/encrypt_check.txt";
         String keyPath = "Q4 Files/only_special_characters.txt";
         String result = myCipher.encrypt(messagePath, keyPath);
-        assertNull(result);
+        assertEquals("DON'T FORGET TO TEST YOUR CODE!\n" +
+                "OTHERWISE YOU WILL BE VERY DISAPPOINTED.", result);
     }
 
     public void testEncryptKeyLonger() {

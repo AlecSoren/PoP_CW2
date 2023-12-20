@@ -2,6 +2,9 @@ import java.io.File;
 import java.util.Scanner;
 import java.util.NoSuchElementException;
 
+import static java.lang.Character.isAlphabetic;
+import static java.lang.Character.toUpperCase;
+
 public class VigenereCipher implements Cipher {
 
     @Override
@@ -21,24 +24,11 @@ public class VigenereCipher implements Cipher {
             return null;
         }
 
-        String rawKey = readFileAsString(keyFilename);
-        if (rawKey == null) {
+        String key = readFileAsString(keyFilename);
+        if (key == null || key.isEmpty()) {
             return null;
         }
-        StringBuilder keyBuilder = new StringBuilder();
-        for (char keyCharacter:
-             rawKey.toCharArray()) {
-            if (keyCharacter >= 97) {
-                keyCharacter -= 32;
-            }
-            if (keyCharacter >= 65 && keyCharacter <= 90) {
-                keyBuilder.append(keyCharacter);
-            }
-        }
-        String key = keyBuilder.toString();
-        if (key.isEmpty()) {
-            return null;
-        }
+        key = key.toUpperCase();
 
         StringBuilder outputStringBuilder = new StringBuilder();
         for (int i = 0; i < message.length(); i++) {
@@ -64,8 +54,8 @@ public class VigenereCipher implements Cipher {
     }
 
     private char shiftCharacter(char messageCharacter, char keyCharacter, boolean isEncrypting) {
-        if (messageCharacter < 65 || messageCharacter > 122 || (messageCharacter > 90 && messageCharacter < 97)) {
-            return messageCharacter;
+        if (!(isAlphabetic(messageCharacter) && isAlphabetic(keyCharacter))) {
+            return toUpperCase(messageCharacter);
         }
         if (messageCharacter >= 97) {
             messageCharacter -= 32;
