@@ -13,7 +13,7 @@ public class CustomSort implements SortingInterface {
         int i = 2;
         while (gap < n) {
             temp.add(gap);
-            gap = (int) (Math.pow(2, i) - 1);
+            gap = power2(i) - 1;
             i++;
         }
         for (i = temp.size() - 1; i >= 0; i--) {
@@ -65,9 +65,6 @@ public class CustomSort implements SortingInterface {
     public void remove(int index) {
         if (values == null) { return; }
         sort();
-        /*if (index < 0) {
-            index = values.size() + index;
-        }*/
         try {
             values.remove(index);
         } catch (IndexOutOfBoundsException ignored) {}
@@ -87,6 +84,18 @@ public class CustomSort implements SortingInterface {
         }
         removeNull();
         return calculateGaps();
+    }
+
+    /**
+     * Custom function for calculating powers of 2 since Math.pow is not allowed.
+     * Returns 2 to the power of the exponent.
+     */
+    private int power2(int exponent) {
+        int result = 1;
+        for (int i = 0; i < exponent; i++) {
+            result *= 2;
+        }
+        return result;
     }
 
     /**
