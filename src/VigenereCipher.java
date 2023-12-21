@@ -2,9 +2,6 @@ import java.io.File;
 import java.util.Scanner;
 import java.util.NoSuchElementException;
 
-import static java.lang.Character.isAlphabetic;
-import static java.lang.Character.toUpperCase;
-
 public class VigenereCipher implements Cipher {
 
     @Override
@@ -54,8 +51,8 @@ public class VigenereCipher implements Cipher {
     }
 
     private char shiftCharacter(char messageCharacter, char keyCharacter, boolean isEncrypting) {
-        if (!(isAlphabetic(messageCharacter) && isAlphabetic(keyCharacter))) {
-            return toUpperCase(messageCharacter);
+        if (!(Character.isAlphabetic(messageCharacter) && Character.isAlphabetic(keyCharacter))) {
+            return Character.toUpperCase(messageCharacter);
         }
         if (messageCharacter >= 97) {
             messageCharacter -= 32;
